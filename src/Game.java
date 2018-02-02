@@ -1,3 +1,4 @@
+import java.awt.Image;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -9,7 +10,7 @@ import java.awt.event.KeyListener;
 public class Game extends JFrame implements KeyListener{
 
     private Board board;
-    private boolean upPressed, downPressed;
+    private boolean upPressed, downPressed, wPressed, sPressed;
 
     public Game(){
         //enables/disables user ability to change frame size
@@ -17,6 +18,7 @@ public class Game extends JFrame implements KeyListener{
         //enables/disables whether the frame renders on screen
         //*************************
         setVisible(true);
+
         //*************************
         //enables/disables whether the frame can be an active window
         setFocusable(true);
@@ -62,12 +64,25 @@ public class Game extends JFrame implements KeyListener{
             GAMESTATES.startMenu();
             board.gameRestart();
         }
+        if(e.getKeyCode() == KeyEvent.VK_SHIFT){
+            GAMESTATES.toggleGameType();
+        }
+
         if(e.getKeyCode() == KeyEvent.VK_UP){
             upPressed = true;
         }
         if(e.getKeyCode() == KeyEvent.VK_DOWN){
             downPressed = true;
         }
+        if(e.getKeyCode() == KeyEvent.VK_W){
+            wPressed = true;
+        }
+        if(e.getKeyCode() == KeyEvent.VK_S){
+            sPressed = true;
+        }
+
+
+
     }
     @Override
     public void keyReleased(KeyEvent e) {
@@ -77,6 +92,13 @@ public class Game extends JFrame implements KeyListener{
         if(e.getKeyCode() == KeyEvent.VK_DOWN){
             downPressed = false;
         }
+        if(e.getKeyCode() == KeyEvent.VK_W){
+            wPressed = false;
+        }
+        if(e.getKeyCode() == KeyEvent.VK_S){
+            sPressed = false;
+        }
+
     }
 
     public boolean isUpPressed(){
@@ -85,5 +107,13 @@ public class Game extends JFrame implements KeyListener{
 
     public boolean isDownPressed(){
         return downPressed;
+    }
+
+    public boolean isWPressed(){
+        return wPressed;
+    }
+
+    public boolean isSPressed(){
+        return sPressed;
     }
 }

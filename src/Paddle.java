@@ -4,7 +4,7 @@ public class Paddle {
     //variables to determine the coordinates of the paddle
     private int x, y;
     //variable to determine the size of the paddle
-    private final int WIDTH = 20, HEIGHT = 100;
+    private final int WIDTH = 6, HEIGHT = 100;
     //creates local variables for the board, game and ball instances
     Board board;
     Game game;
@@ -21,14 +21,14 @@ public class Paddle {
         this.ball = ball;
     }
     public void move(){
-        //if the up key is pressed move paddle up
-        if(game.isUpPressed()){
+        //if the W key is pressed move paddle up
+        if(game.isWPressed()){
             if(y > 0){
                 y -= 5;
             }
         }
         //if the down key is pressed move the paddle down
-        if(game.isDownPressed()){
+        if(game.isSPressed()){
             if(y + HEIGHT < board.getHeight()){
                 y += 5;
             }
@@ -40,16 +40,33 @@ public class Paddle {
     }
 
     //CREATES AI MOVEMENT
-    public void moveAI(){
-        //start moving once the ball crosses halfway point
-        if(ball.getX()+ ball.getDiam() > board.getWidth()/2){
-            //if the ball is above the center of the paddle
-            if(ball.getY() > y + HEIGHT/2){
-                y += 3;
+    public void moveAI(boolean isTwoPlay){
+        //if it is not two players
+        if(!isTwoPlay) {
+            //start moving once the ball crosses halfway point
+            if (ball.getX() + ball.getDiam() > board.getWidth() / 2) {
+                //if the ball is above the center of the paddle
+                if (ball.getY() > y + HEIGHT/2) {
+                    y += 3.25;
+                }
+                //if the ball is below the center of the paddle
+                if (ball.getY() < y+HEIGHT/2) {
+                    y -= 3.25;
+                }
             }
-            //if the ball is below the center of the paddle
-            if(ball.getY() < y + HEIGHT/2){
-                y -= 3;
+        }
+        else{
+            //if the up key is pressed move paddle up
+            if(game.isUpPressed()){
+                if(y > 0){
+                    y -= 5;
+                }
+            }
+            //if the down key is pressed move the paddle down
+            if(game.isDownPressed()){
+                if(y + HEIGHT < board.getHeight()){
+                    y += 5;
+                }
             }
         }
     }

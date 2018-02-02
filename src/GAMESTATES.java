@@ -6,18 +6,19 @@
 public class GAMESTATES {
 
     private static boolean isPlay = false;
+    private static boolean isTwoPlay = false;
     private static boolean isPause = false;
     private static boolean isMenu = true;
     private static boolean isEnd = false;
     private static Integer cScore = new Integer(0);
     private static Integer pScore = new Integer(0);
+    private static String gameType = "Player VS AI";
 
     /*
      *METHODS FOR SETTING AND RETURNING THE SCORES
      * FOR COMPUTER AND PLAYER
      */
-    public static Integer getcScore() {return cScore;
-    }
+    public static Integer getcScore() {return cScore; }
 
     public static Integer getpScore(){
         return pScore;
@@ -38,12 +39,18 @@ public class GAMESTATES {
         pScore = a;
     }
 
+    public static String getGameType() {
+        return gameType;
+    }
+
     /* GETTERS AND SETTERS FOR THE GAME CONTROLLERS
 
     */
+
     public static boolean isPlay(){
         return isPlay;
     }
+    public static boolean isTwoPlay() {return isTwoPlay;}
     public static boolean isPause(){
         return isPause;
     }
@@ -81,24 +88,21 @@ public class GAMESTATES {
     /* METHODS FOR TOGGLING BETWEEN GAMESTATES
 
      */
-    public static void togglePlay(){
-        if(isPlay){
-            isPlay = false;
-        }
-        else {
-            isPlay = true;
-        }
-    }
-    public static void togglePause(){
-        if(isPause)
-            isPause = false;
+    public static void togglePlay(){isPlay = !isPlay;}
+    public static void toggleTwoPlay(){isTwoPlay = !isTwoPlay;}
+    public static void togglePause(){isPause = !isPause;}
+    public static void toggleMenu(){isMenu = !isMenu;}
+
+    public static void toggleGameType(){
+        if(gameType.equals("Player VS AI"))
+            gameType = "Player VS Player";
         else
-            isPause = true;
+            gameType = "Player VS AI";
+        toggleTwoPlay();
+
+
     }
-    public static void toggleMenu(){
-        if(isMenu)
-            isMenu = false;
-        else
-            isMenu = true;
-    }
+
+
+
 }

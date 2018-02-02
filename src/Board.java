@@ -16,6 +16,7 @@ public class Board extends JPanel implements ActionListener{
     //variables used to determine sizes for board decorations
     private final int DECORSIZE = 25;
 
+
     public Board(Game game) {
         //sets the size JFrame.pack should use if its optimal
         setPreferredSize(new Dimension(800, 600));
@@ -26,6 +27,9 @@ public class Board extends JPanel implements ActionListener{
         ball = new Ball(this);
         pPaddle = new Paddle(this, game, ball );
         cPaddle = new Paddle(this, game, ball );
+        timer = new Timer(1000 / 60, this);
+        timer.start();
+
     }
     //method to initialize the game
     public void GameStart(){
@@ -34,8 +38,7 @@ public class Board extends JPanel implements ActionListener{
         pPaddle.setPosition(EDGESPACE, getHeight()/2);
         cPaddle.setPosition(getWidth() - EDGESPACE, getHeight()/2);
         //creates a timer to control rendering graphics and game updates
-        timer = new Timer(1000 / 60, this);
-        timer.start();
+
     }
 
     public void gameReset(){
@@ -51,7 +54,7 @@ public class Board extends JPanel implements ActionListener{
     }
 
     //method called in the ActionListener which controls the game updates/rendering
-    @Override
+    //@Override
     public void actionPerformed(ActionEvent e) {
 
         if(GAMESTATES.isPlay()) {
@@ -59,8 +62,9 @@ public class Board extends JPanel implements ActionListener{
             ball.move(cPaddle);
             //ball.move(cPaddle);
             pPaddle.move();
-            cPaddle.moveAI();
+            cPaddle.moveAI(GAMESTATES.isTwoPlay());
         }
+
 
         //checks whether the ball has collided with paddles
         ball.checkCollisions(pPaddle);
@@ -86,31 +90,47 @@ public class Board extends JPanel implements ActionListener{
         g.setColor(Color.WHITE);
         //paints the ball object on the panel
         if(GAMESTATES.isPlay()){
+            g.setFont(new Font("Serif", Font.BOLD, 72));
             //Render Objects
-            ball.paint(g);
-            pPaddle.paint(g);
-            cPaddle.paint(g);
+
+
+            g.setColor(Color.red);
+
             //Render Goalline for Player
             g.drawLine(EDGESPACE, 0, EDGESPACE,getHeight());
+
+            g.setColor(Color.green);
+
             //Render Goaline for Computer
             g.drawLine(getWidth()-EDGESPACE, 0, getWidth()-EDGESPACE, getHeight());
+
+            //Print the score on the board
+            g.setColor(Color.red);
+            printSimpleString(GAMESTATES.getpScore().toString(), getWidth()/2, 0, DECORSIZE*2, g);
+            g.setColor(Color.green);
+            printSimpleString(GAMESTATES.getcScore().toString(), getWidth()/2, getWidth()/2, DECORSIZE*2, g);
+
             //Center Circle Outline
+            g.setColor(Color.white);
             g.drawOval(getWidth()/2 - (EDGESPACE*2), getHeight()/2 - (EDGESPACE * 2), EDGESPACE*4, EDGESPACE*4);
             //Dashes down the center
             int numDashes = getHeight() / DECORSIZE;
             for(int i = 0; i < numDashes; i++){
                 g.drawLine(getWidth()/2, (i*DECORSIZE+DECORSIZE/4), getWidth()/2, (i*DECORSIZE)+(int)(DECORSIZE*(3.0/4)));
             }
-            //Print the score on the board
-            g.setFont(new Font("Serif", Font.BOLD, 72));
-            printSimpleString(GAMESTATES.getpScore().toString(), getWidth()/2, 0, DECORSIZE*2, g);
-            printSimpleString(GAMESTATES.getcScore().toString(), getWidth()/2, getWidth()/2, DECORSIZE*2, g);
+
+            ball.paint(g);
+            cPaddle.paint(g);
+            pPaddle.paint(g);
         }
         else if(GAMESTATES.isMenu()){
+
             //Renders the Menu Board
             g.setFont(new Font("Serif", Font.BOLD, 36));
             printSimpleString("PONG", getWidth(), 0, (int)getHeight()/3, g);
-            printSimpleString("Press *SPACE* to start.", getWidth(), 0, (int)(getHeight()*(2.0/3)), g);
+            printSimpleString("Press *SHIFT* to change play type.", getWidth(), 0, (int)(getHeight()*(2.0/3)-50), g);
+            printSimpleString("Game Type: " + GAMESTATES.getGameType() +".", getWidth(), 0, (int)(getHeight()*(2.0/3)), g);
+            printSimpleString("Press *SPACE* to start.", getWidth(), 0, (int)(getHeight()*(2./3))+50, g);
 
         }
         else if(GAMESTATES.isPause()){
