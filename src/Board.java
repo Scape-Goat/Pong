@@ -21,6 +21,9 @@ public class Board extends JPanel implements ActionListener{
         //sets the size JFrame.pack should use if its optimal
         setPreferredSize(new Dimension(800, 600));
         //sets the background color of the panel
+
+
+
         setBackground(Color.BLACK);
         //creates a new instance of the Ball class and passes in the current instance of the
         //board class
@@ -71,10 +74,12 @@ public class Board extends JPanel implements ActionListener{
         ball.checkCollisions(cPaddle);
 
         if(GAMESTATES.getcScore() > 9 || GAMESTATES.getpScore() > 9) {
-            gameRestart();
             GAMESTATES.endGame();
             GAMESTATES.stopPlay();
             GAMESTATES.stopPause();
+
+
+
         }
         //refreshes the panel to render the objects with their new positions
         repaint();
@@ -128,7 +133,7 @@ public class Board extends JPanel implements ActionListener{
             //Renders the Menu Board
             g.setFont(new Font("Serif", Font.BOLD, 36));
             printSimpleString("PONG", getWidth(), 0, (int)getHeight()/3, g);
-            printSimpleString("Press *SHIFT* to change play type.", getWidth(), 0, (int)(getHeight()*(2.0/3)-50), g);
+            printSimpleString("Press *CONTROL* to change play type.", getWidth(), 0, (int)(getHeight()*(2.0/3)-50), g);
             printSimpleString("Game Type: " + GAMESTATES.getGameType() +".", getWidth(), 0, (int)(getHeight()*(2.0/3)), g);
             printSimpleString("Press *SPACE* to start.", getWidth(), 0, (int)(getHeight()*(2./3))+50, g);
 
@@ -141,13 +146,19 @@ public class Board extends JPanel implements ActionListener{
         }
         else if(GAMESTATES.isEnd()){
             //Renders the End Game Screen
-
+            String message;
             g.setFont(new Font("Serif", Font.BOLD, 36));
             if(GAMESTATES.getpScore() > 9){
-                printSimpleString("YOU WON!!", getWidth(), 0, (int)getHeight()/3, g);
-            }else
-                printSimpleString("YOU LOST :(", getWidth(), 0, (int)getHeight()/3, g);
-
+                message = "YOU WON!!";
+                if(GAMESTATES.isTwoPlay())
+                    message = "Player 1 Wins!";
+                printSimpleString(message, getWidth(), 0, (int)getHeight()/3, g);
+            }else {
+                message = "YOU LOST!! :(";
+                if(GAMESTATES.isTwoPlay())
+                    message = "Player 2 Wins!";
+                printSimpleString(message, getWidth(), 0, (int)getHeight()/3, g);
+            }
             printSimpleString("Press *SPACE* to begin again.", getWidth(), 0, (int)(getHeight()*(2.0/3)), g);
         }
 

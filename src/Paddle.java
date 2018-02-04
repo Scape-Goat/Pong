@@ -4,7 +4,7 @@ public class Paddle {
     //variables to determine the coordinates of the paddle
     private int x, y;
     //variable to determine the size of the paddle
-    private final int WIDTH = 6, HEIGHT = 100;
+    private final int WIDTH = 20, HEIGHT = 100;
     //creates local variables for the board, game and ball instances
     Board board;
     Game game;
@@ -47,11 +47,11 @@ public class Paddle {
             if (ball.getX() + ball.getDiam() > board.getWidth() / 2) {
                 //if the ball is above the center of the paddle
                 if (ball.getY() > y + HEIGHT/2) {
-                    y += 3.25;
+                    y += 4;
                 }
                 //if the ball is below the center of the paddle
                 if (ball.getY() < y+HEIGHT/2) {
-                    y -= 3.25;
+                    y -= 4;
                 }
             }
         }

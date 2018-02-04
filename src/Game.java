@@ -50,9 +50,10 @@ public class Game extends JFrame implements KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
 
-        if(e.getKeyCode() == KeyEvent.VK_SPACE){
+        if(e.getKeyCode() == KeyEvent.VK_SPACE &&(GAMESTATES.isMenu() || GAMESTATES.isEnd() )){
             GAMESTATES.startPlay();
             GAMESTATES.stopMenu();
+            board. gameRestart();
         }
         if(e.getKeyCode() == KeyEvent.VK_P){
             GAMESTATES.togglePause();
@@ -64,7 +65,7 @@ public class Game extends JFrame implements KeyListener{
             GAMESTATES.startMenu();
             board.gameRestart();
         }
-        if(e.getKeyCode() == KeyEvent.VK_SHIFT){
+        if(e.getKeyCode() == KeyEvent.VK_CONTROL && GAMESTATES.isMenu()){
             GAMESTATES.toggleGameType();
         }
 
